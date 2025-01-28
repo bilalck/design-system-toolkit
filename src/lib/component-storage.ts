@@ -1,6 +1,15 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+function getErrorMessage(error: unknown): string {
+if (error instanceof Error) {
+    return error.message;
+}
+if (typeof error === 'string') {
+    return error;
+}
+return 'An unknown error occurred';
+}
 const COMPONENTS_DIR = path.join(process.cwd(), 'src', 'components', 'generated');
 
 interface ComponentMetadata {
@@ -44,7 +53,7 @@ try {
     try {
     await fs.mkdir(dirPath, { recursive: true });
     } catch (error) {
-    throw new ComponentStorageError(`Failed to create directory ${dirPath}: ${error.message}`);
+    throw new ComponentStorageError(`Failed to create directory ${dirPath}: ${getErrorMessage(error)}`);
     }
 }
 }
@@ -81,7 +90,7 @@ try {
     await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2), 'utf8');
     return componentPath;
 } catch (error) {
-    throw new ComponentStorageError(`Failed to save component ${name}: ${error.message}`);
+    throw new ComponentStorageError(`Failed to save component ${name}: ${getErrorMessage(error)}`);
 }
 }
 
@@ -93,7 +102,7 @@ try {
     const files = await fs.readdir(targetDir);
     return files.filter(file => file.endsWith('.tsx'));
 } catch (error) {
-    throw new ComponentStorageError(`Failed to list components: ${error.message}`);
+    throw new ComponentStorageError(`Failed to list components: ${getErrorMessage(error)}`);
 }
 }
 
@@ -113,7 +122,7 @@ try {
     
     return { content, metadata };
 } catch (error) {
-    throw new ComponentStorageError(`Failed to load component ${name}: ${error.message}`);
+    throw new ComponentStorageError(`Failed to load component ${name}: ${getErrorMessage(error)}`);
 }
 }
 
