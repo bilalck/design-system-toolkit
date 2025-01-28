@@ -5,9 +5,10 @@ export * from './atoms/Button';
 export type {
 ButtonProps,
 BaseProps,
+ButtonVariant,
+ButtonSize,
 Color,
 Size,
-Variant,
 } from '../../types';
 
 // Constants

@@ -15,7 +15,7 @@ export type RecursivePartial<T> = {
 
 // Type guards
 export function isElementType<T extends ElementType>(
-value: any
+value: unknown
 ): value is T {
 return typeof value === 'string' || typeof value === 'function';
 }
